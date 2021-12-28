@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
+import  download from  'downloadjs'
 
 export const WarningPopup = ({ open, className = "" }) => (
   <Popup open={open} modal closeOnDocumentClick={true} className={className}>
@@ -108,20 +109,24 @@ export const SavePopup = ({ open, closeModal, saveJDL, className = "" }) => {
   );
 };
 
-export const UploadPopup = ({ open, closeModal, setCode, className = "" ,}) => {
+export const UploadPopup = ({ open, closeModal, setCode, className = "" ,evt}) => {
+  
   const [file, setFiles] = useState(null);
 
   const setJDlFile = (evt) => {
     setFiles(evt.target.files[0]);
   };
 
-  const importFile = (e) => {
-    
-    closeModal();
-    importJDL(file, setCode);
 
-  };
 
+  const handleWithEvent=(e)=>{
+
+closeModal();
+importJDL(file, setCode,evt);
+
+      
+    }
+  
   return (
     <Popup
       open={open}
@@ -145,7 +150,7 @@ export const UploadPopup = ({ open, closeModal, setCode, className = "" ,}) => {
           />
         </div>
         <div className="actions">
-          <button className="button" onClick={(e)=>importFile(e)}>
+          <button className="button"   onClick={handleWithEvent}>
             Import
           </button>
           <button className="button" onClick={closeModal}>
@@ -157,7 +162,8 @@ export const UploadPopup = ({ open, closeModal, setCode, className = "" ,}) => {
   );
 };
 
-function importJDL(f, setCurrentText) {
+function importJDL(f, setCurrentText,evt) {
+  
   if (!f) {
     alert("Failed to load file");
   } else if (
@@ -177,7 +183,27 @@ function importJDL(f, setCurrentText) {
       
       }
     };
+    
+    
+    
+   
+    r.onloadend=function(e){
+      const canvasElement = document.getElementById("canvas") as HTMLCanvasElement;
+      var url = canvasElement.toDataURL("image/png");
+      
+   
+  
+  
+      download(url, "dlDataUrlText.png", "image/png");
+  
+  
+      ga("send", "event", "JDL Image", "download", "JDL Image download");
+      ga("jdlTracker.send", "event", "JDL Image", "download", "JDL Image download");
+    }
     r.readAsText(f);
+
+
+
   }
   ga("send", "event", "JDL File", "upload", "JDL File upload");
   ga("jdlTracker.send", "event", "JDL File", "upload", "JDL File upload");

@@ -120,7 +120,6 @@ export const initAuthentication = () => async (dispatch) => {
 
 export const fetchAllJDLsMetadata = () => async (dispatch) => {
   const httpHeader = getHeaders();
-  console.log("header",httpHeader);
   
   if (httpHeader) {
     try {

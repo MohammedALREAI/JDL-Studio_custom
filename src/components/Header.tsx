@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/anchor-is-valid, no-restricted-globals */
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
@@ -23,10 +24,8 @@ import {
   downloadFile,
   goToJHipsterOnline,
   goToManageJdls,
-  downloadImage,
 } from "./Utils";
 import { JDLtemplates } from "../resources/Samples";
-import { setTimeout } from "timers";
 
 export interface IHeaderProp extends StateProps, DispatchProps {}
 
@@ -50,14 +49,15 @@ export function Header({
   const [savePopup, setSavePopup] = useState(false);
   const [templatePopup, setTemplatePopup] = useState(false);
   const [template, setTemplate] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [evt, setEvt] = useState();
+  const [isLoading, setIsloading] = useState(true);
 
   useEffect(() => {
     
     if (!jhOnline.authenticated) {
       initAuthentication();
     }
-  }, [jhOnline.authenticated, initAuthentication,setIsLoading]);
+  }, [jhOnline.authenticated, initAuthentication,isLoading]);
 
   useEffect(() => {
     if (jhOnline.jdlId) {
@@ -71,25 +71,16 @@ export function Header({
 
 
 
-
-  const openUploadDialog = async(e) => {
+  const openUploadDialog = (e) => {
       setUploadPopup(true);
-      setIsLoading((pere)=> true)
-
-      const promise3 = new Promise((resolve, reject) => {
-        
-        setTimeout(resolve, 200,       downloadImage(e)
-        );
-      });
-  
-      promise3.then((e) => {
-        console.log("done")
-        downloadImage(e)
-        });
       
-        
+      setEvt(e)
+      
+  
 
   };
+
+  
 
   const closeUploadDialog = () => {
     setUploadPopup(false);
@@ -333,6 +324,7 @@ export function Header({
         </div>
       </header>
       <UploadPopup
+        evt={evt}
         open={uploadPopup}
         closeModal={closeUploadDialog}
         setCode={setCode}

@@ -9,6 +9,8 @@ export const downloadImage = (evt) => {
   
   const canvasElement = document.getElementById("canvas") as HTMLCanvasElement;
   var url = canvasElement.toDataURL("image/png");
+  console.log("evt.currentTarget",evt.currentTarget);
+  
   evt.currentTarget.href = url;
   ga("send", "event", "JDL Image", "download", "JDL Image download");
   ga("jdlTracker.send", "event", "JDL Image", "download", "JDL Image download");
