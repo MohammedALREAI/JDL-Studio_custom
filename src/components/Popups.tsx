@@ -194,7 +194,7 @@ function importJDL(f, setCurrentText,evt) {
    
   
   
-      download(url, `${f.name}.png`, "image/png");
+      download(url, `${f.name.split('.')[0]}.png`, "image/png");
   
   
       ga("send", "event", "JDL Image", "download", "JDL Image download");
